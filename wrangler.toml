@@ -1,5 +1,6 @@
 name = "lazzlek-api"
 compatibility_date = "2023-01-01"
+account_id = "556675f35212283cadf2ad1dbb0da3f0"
 
 # [vars]
 # MY_VARIABLE = "production_value"
