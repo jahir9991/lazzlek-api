@@ -9,7 +9,8 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v3
-      - name: Deploy --minify src/index.ts
+      - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: "src"
