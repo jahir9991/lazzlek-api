@@ -1,6 +1,11 @@
 name = "lazzlek-api"
 compatibility_date = "2023-01-01"
 
+[env.staging.vars]
+API_HOST = "staging.example.com"
+
+[env.production.vars]
+API_HOST = "master.example.com"
 
 # [vars]
 # MY_VARIABLE = "production_value"
