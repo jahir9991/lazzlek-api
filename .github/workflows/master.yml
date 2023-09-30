@@ -1,26 +1,42 @@
-name: CI
-"on":
+# name: CI
+# "on":
+#   push:
+#     branches:
+#       - master
+#   repository_dispatch: null
+# jobs:
+#   build-and-deploy-stg:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: lts/*
+#           cache: npm
+#       - run: npm ci
+#         env:
+#           CI: true
+#       - uses: cloudflare/wrangler-action@v3
+#         name: Deploy to Cloudflare (master)
+#         with:
+#           apiToken: "${{ secrets.CF_API_TOKEN }}"
+#           accountId: "${{ secrets.CF_ACCOUNT_ID }}"
+#           command: deploy --minify src/index.ts
+          
+  
+on:
   push:
     branches:
       - master
-  repository_dispatch: null
+
 jobs:
-  build-and-deploy-stg:
+  deploy:
     runs-on: ubuntu-latest
+    name: Deploy
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
         with:
-          node-version: lts/*
-          cache: npm
-      - run: npm ci
-        env:
-          CI: true
-      - uses: cloudflare/wrangler-action@v3
-        name: Deploy to Cloudflare (master)
-        with:
-          apiToken: "${{ secrets.CF_API_TOKEN }}"
-          accountId: "${{ secrets.CF_ACCOUNT_ID }}"
+          apiToken: ${{ secrets.CF_API_TOKEN }}
           command: deploy --minify src/index.ts
-          
-  
