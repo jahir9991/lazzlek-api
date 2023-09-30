@@ -207,10 +207,6 @@ async function handleApiRequest(path, request, env) {
 // connect to the room using WebSockets, and the room broadcasts messages from each participant
 // to all others.
 export class ChatRoom {
-    storage: any;
-    env: any;
-    sessions: any;
-    lastTimestamp: any;
     constructor(controller, env) {
         // `controller.storage` provides access to our durable storage. It provides a simple KV
         // get()/put() interface.
@@ -284,7 +280,7 @@ export class ChatRoom {
         // Create our session and add it to the sessions list.
         // We don't send any messages to the client until it has sent us the initial user info
         // message. Until then, we will queue messages in `session.blockedMessages`.
-        let session: any = { webSocket, blockedMessages: [] };
+        let session = { webSocket, blockedMessages: [] };
         this.sessions.push(session);
 
         // Queue "join" messages for all online users, to populate the client's roster.
@@ -449,7 +445,6 @@ export class ChatRoom {
 // global, i.e. they apply across all chat rooms, so if a user spams one chat room, they will find
 // themselves rate limited in all other chat rooms simultaneously.
 export class RateLimiter {
-    nextAllowedTime: any;
     constructor(controller, env) {
         // Timestamp at which this IP will next be allowed to send a message. Start in the distant
         // past, i.e. the IP can send a message now.
@@ -475,7 +470,7 @@ export class RateLimiter {
             //
             // We provide a "grace" period of 20 seconds, meaning that the client can make 4-5 requests
             // in a quick burst before they start being limited.
-            let cooldown: any = Math.max(0, this.nextAllowedTime - now - 20);
+            let cooldown = Math.max(0, this.nextAllowedTime - now - 20);
             return new Response(cooldown);
         })
     }
@@ -489,12 +484,6 @@ class RateLimiterClient {
     //   lost.
     // * reportError(err) is called when something goes wrong and the rate limiter is broken. It
     //   should probably disconnect the client, so that they can reconnect and start over.
-
-    getLimiterStub: any;
-    reportError: any;
-    limiter: any;
-    inCooldown: any;
-
     constructor(getLimiterStub, reportError) {
         this.getLimiterStub = getLimiterStub;
         this.reportError = reportError;
