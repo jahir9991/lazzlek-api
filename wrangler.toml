@@ -1,19 +1,35 @@
 name = "lazzlek-api"
 workers_dev = true
 compatibility_date = "2023-01-01"
-main = "src/index.js"
+main = "src/index.mjs"
 
-[durable_objects]
-bindings = [
+
+[env.production]
+rules = [{ type = "Data", globs = ["**/*.html"], fallthrough = false }]
+durable_objects = { bindings = [
     { name = "rooms", class_name = "ChatRoom" },
     { name = "limiters", class_name = "RateLimiter" },
-]
+], migrations = { tag = "v8", new_classes = [
+    "ChatRoom",
+    "RateLimiter",
+] } }
 
-[env.staging.vars]
-API_HOST = "staging.example.com"
+[env.staging]
+rules = [{ type = "Data", globs = ["**/*.html"], fallthrough = false }]
+durable_objects = { bindings = [
+    { name = "rooms", class_name = "ChatRoom" },
+    { name = "limiters", class_name = "RateLimiter" },
+], migrations = { tag = "v8", new_classes = [
+    "ChatRoom",
+    "RateLimiter",
+] } }
 
-[env.production.vars]
-API_HOST = "master.example.com"
+
+# [env.staging.vars]
+# API_HOST = "staging.example.com"
+
+# [env.production.vars]
+# API_HOST = "master.example.com"
 
 
 # [vars]
@@ -32,12 +48,4 @@ API_HOST = "master.example.com"
 # database_name = "my-database"
 # database_id = ""
 
-[[rules]]
-type = "Data"
-globs = ["**/*.html"]
-fallthrough = false
-
 # Indicate that you want the ChatRoom and RateLimiter classes to be callable as Durable Objects.
-[[migrations]]
-tag = "v2"                                # Should be unique for each entry
-new_classes = ["ChatRoom", "RateLimiter"]
