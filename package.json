@@ -1,8 +1,9 @@
 {
   "scripts": {
     "dev": "wrangler dev src/index.mjs",
-    "deploy": "wrangler deploy --minify src/index.mjs"
+    "deploy": "wrangler deploy --minify src/index.js"
   },
+  "module": "./src/chat.js",
   "dependencies": {
     "hono": "^3.7.2"
   },
