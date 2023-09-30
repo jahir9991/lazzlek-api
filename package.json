@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "wrangler dev src/index.mjs",
-    "deploy": "wrangler deploy --env production  src/index.mjs"
+    "deploy:production": "wrangler deploy --minify --env production ",
+    "deploy:staging": "wrangler deploy --minify --env staging "
   },
   "module": "./src/chat.js",
   "dependencies": {

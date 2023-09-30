@@ -1,51 +1,32 @@
 name = "lazzlek-api"
 workers_dev = true
 compatibility_date = "2023-01-01"
-main = "src/index.mjs"
+main = "src/index.ts"
+minify = true
+account_id = "556675f35212283cadf2ad1dbb0da3f0"
 
 
-[env.production]
-rules = [{ type = "Data", globs = ["**/*.html"], fallthrough = false }]
-durable_objects = { bindings = [
+[[rules]]
+type = "Data"
+globs = ["**/*.html"]
+fallthrough = false
+
+
+[env.production.durable_objects]
+bindings = [
     { name = "rooms", class_name = "ChatRoom" },
     { name = "limiters", class_name = "RateLimiter" },
-], migrations = { tag = "v8", new_classes = [
-    "ChatRoom",
-    "RateLimiter",
-] } }
+]
+[env.production.migrations]
+tag = "v1"
+new_classes = ["ChatRoom", "RateLimiter"]
 
-[env.staging]
-rules = [{ type = "Data", globs = ["**/*.html"], fallthrough = false }]
-durable_objects = { bindings = [
+
+[env.staging.durable_objects]
+bindings = [
     { name = "rooms", class_name = "ChatRoom" },
     { name = "limiters", class_name = "RateLimiter" },
-], migrations = { tag = "v8", new_classes = [
-    "ChatRoom",
-    "RateLimiter",
-] } }
-
-
-# [env.staging.vars]
-# API_HOST = "staging.example.com"
-
-# [env.production.vars]
-# API_HOST = "master.example.com"
-
-
-# [vars]
-# MY_VARIABLE = "production_value"
-
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
-# [[r2_buckets]]
-# binding = "MY_BUCKET"
-# bucket_name = "my-bucket"
-
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "my-database"
-# database_id = ""
-
-# Indicate that you want the ChatRoom and RateLimiter classes to be callable as Durable Objects.
+]
+[env.staging.migrations]
+tag = "v1"
+new_classes = ["ChatRoom", "RateLimiter"]
